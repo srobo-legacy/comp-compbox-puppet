@@ -27,4 +27,8 @@ class compbox( ) {
     require => File['/usr/local/var'],
   }
 
+  class { "compbox::compd":
+    git_root => $git_root,
+  }
+
 }
