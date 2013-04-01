@@ -41,12 +41,12 @@ class compbox::compd ( $git_root ) {
   # will be templated into it.
   $compd_nick = extlookup('compd_nick')
   $compd_user = extlookup('compd_user')
-  file { "${root_dir}/config.yaml":
+  file { "${compd_root}/config.yaml":
     ensure => present,
     owner => 'compd',
     group => 'users',
     content => template('compbox/compd_config.yaml.erb'),
-    require => Vcsrepo["${root_dir}"],
+    require => VcsRepo["${compd_root}"],
   }
 
   exec { 'install-compd':
