@@ -54,7 +54,8 @@ class compbox::compd-screens ( $git_root ) {
     provider => 'shell',
     command => 'systemctl daemon-reload',
     onlyif => 'systemctl --all | grep compd-screens; if test $? = 0; then exit 1; fi; exit 0',
-    require => File['/etc/systemd/system/multi-user.target.wants/compd-screens.service'],
+    require => [File['/etc/systemd/system/multi-user.target.wants/compd-screens.service'],
+                Exec['install-compd-screens']],
   }
 
   # And finally maintain compd-screens being running.

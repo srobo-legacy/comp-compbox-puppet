@@ -37,13 +37,25 @@ class compbox::compd ( $git_root ) {
     require => User['compd'],
   }
 
+  # Site-local configuration is stored in local.ini; assign some variables that
+  # will be templated into it.
+  $compd_nick = extlookup('compd_nick')
+  $compd_user = extlookup('compd_user')
+  file { "${root_dir}/config.yaml":
+    ensure => present,
+    owner => 'compd',
+    group => 'users',
+    content => template('compbox/compd_config.yaml.erb'),
+    require => Vcsrepo["${root_dir}"],
+  }
+
   exec { 'install-compd':
     cwd => "${compd_root}",
     command => "./install",
     provider => 'shell',
     creates => "${compd_root}/dep",
     user => 'compd',
-    require => [User['compd'],VcsRepo["${compd_root}"]],
+    require => [User['compd'],VcsRepo["${compd_root}"],File["${compd_root}/config.yaml"]],
   }
 
   # Also, some systemd goo to install the service.
@@ -67,7 +79,8 @@ class compbox::compd ( $git_root ) {
     provider => 'shell',
     command => 'systemctl daemon-reload',
     onlyif => 'systemctl --all | grep compd; if test $? = 0; then exit 1; fi; exit 0',
-    require => File['/etc/systemd/system/multi-user.target.wants/compd.service'],
+    require => [File['/etc/systemd/system/multi-user.target.wants/compd.service'],
+                Exec['install-compd']],
   }
 
   # And finally maintain compd being running.
