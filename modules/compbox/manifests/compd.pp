@@ -16,6 +16,14 @@ class compbox::compd ( $git_root ) {
     gid => 'users',
   }
 
+  file { '/home/compd':
+    ensure => directory,
+    owner => 'compd',
+    group => 'users',
+    mode => '700',
+    require => User['compd'],
+  }
+
   # Checkout of compd
   vcsrepo { "${compd_root}":
     ensure => present,
