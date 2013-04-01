@@ -5,6 +5,7 @@ Description=Manage the competition
 User=compd
 Group=users
 ExecStart=/srv/compd/run
+WorkingDirectory=/srv/compd
 Type=simple
 Restart=on-failure
 

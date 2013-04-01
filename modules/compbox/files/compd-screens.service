@@ -5,6 +5,7 @@ Description=Display stuff about the competition
 User=compd
 Group=users
 ExecStart=/srv/compd-screens/run
+WorkingDirectory=/srv/compd-screens
 Type=simple
 Restart=on-failure
 
