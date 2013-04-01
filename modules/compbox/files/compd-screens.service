@@ -1,0 +1,12 @@
+[Unit]
+Description=Display stuff about the competition
+
+[Service]
+User=compd
+Group=users
+ExecStart=/srv/compd-screens/run
+Type=simple
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

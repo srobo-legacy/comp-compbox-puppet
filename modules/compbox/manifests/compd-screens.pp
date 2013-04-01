@@ -33,4 +33,33 @@ class compbox::compd-screens ( $git_root ) {
     require => VcsRepo["${compd_screens_root}"],
   }
 
+  # Also, some systemd goo to install the service.
+  file { '/etc/systemd/system/compd-screens.service':
+    ensure => present,
+    owner => 'root',
+    group => 'root',
+    mode => '644',
+    source => 'puppet:///modules/compbox/compd-screens.service',
+  }
+
+  # Link in the systemd service to run in multi user mode.
+  file { '/etc/systemd/system/multi-user.target.wants/compd-screens.service':
+    ensure => link,
+    target => '/etc/systemd/system/compd-screens.service',
+    require => File['/etc/systemd/system/compd-screens.service'],
+  }
+
+  # systemd has to be reloaded before picking this up,
+  exec { 'compd-screens-systemd-load':
+    provider => 'shell',
+    command => 'systemctl daemon-reload',
+    onlyif => 'systemctl --all | grep compd-screens; if test $? = 0; then exit 1; fi; exit 0',
+    require => File['/etc/systemd/system/multi-user.target.wants/compd-screens.service'],
+  }
+
+  # And finally maintain compd-screens being running.
+  service { 'compd-screens':
+    ensure => running,
+    require => Exec['compd-screens-systemd-load'],
+  }
 }
