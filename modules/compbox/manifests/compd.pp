@@ -53,7 +53,7 @@ class compbox::compd ( $git_root ) {
     cwd => "${compd_root}",
     command => "./install",
     provider => 'shell',
-    creates => "${compd_root}/dep",
+#    creates => "${compd_root}/dep",
     user => 'compd',
     require => [User['compd'],VcsRepo["${compd_root}"],File["${compd_root}/config.yaml"]],
   }

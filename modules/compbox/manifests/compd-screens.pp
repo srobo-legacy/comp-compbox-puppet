@@ -28,7 +28,7 @@ class compbox::compd-screens ( $git_root ) {
     cwd => "${compd_screens_root}",
     command => "./install",
     provider => 'shell',
-    creates => "${compd_screens_root}/dep",
+#    creates => "${compd_screens_root}/dep",
     user => 'compd',
     require => VcsRepo["${compd_screens_root}"],
   }
