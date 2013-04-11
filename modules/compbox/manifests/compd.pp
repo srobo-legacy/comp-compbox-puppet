@@ -28,8 +28,7 @@ class compbox::compd ( $git_root ) {
   vcsrepo { "${compd_root}":
     ensure => present,
     provider => git,
-#    source => "${git_root}/compd/compd.git",
-    source => "git://github.com/prophile/compd.git",
+    source => "${git_root}/comp/poltergeist.git",
     revision => "origin/master",
     force => true,
     owner => 'compd',
