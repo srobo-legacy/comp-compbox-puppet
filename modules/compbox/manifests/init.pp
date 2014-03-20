@@ -27,4 +27,9 @@ class compbox( ) {
     require => File['/usr/local/var'],
   }
 
+  # Web stuff (basically everything this box does)
+  class { "www":
+    git_root => $git_root,
+  }
+
 }

@@ -1,0 +1,19 @@
+
+# Relocate WSGI daemon sockets
+WSGISocketPrefix /var/run/wsgi
+
+# Primary configuration gunge for the main website.
+<Directory "<%= web_root_dir %>">
+	Options All
+	AllowOverride All
+</Directory>
+
+# Deny everyone userdirs
+UserDir disabled
+
+# Pass accesses to /comp-api over to the Competition API in WSGI
+WSGIScriptAlias /comp-api /srv/srcomp-http/comp-api.wsgi
+<Directory /srv/srcomp-http>
+	Order deny,allow
+	Allow from all
+</Directory>
