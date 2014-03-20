@@ -27,12 +27,4 @@ class compbox( ) {
     require => File['/usr/local/var'],
   }
 
-  class { "compbox::compd":
-    git_root => $git_root,
-  }
-
-  class { "compbox::compd-screens":
-    git_root => $git_root,
-  }
-
 }
